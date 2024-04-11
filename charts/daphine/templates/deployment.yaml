@@ -1,33 +1,66 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}
+  name: {{.Chart.Name}}
 spec:
-  replicas: {{ .Values.deployment.replicaCount }}
+  replicas: {{.Values.deployment.replicaCount}}
   selector:
-    matchLabels: {{ .Values.deployment.labels }}
+    matchLabels: {{- toYaml .Values.deployment.labels | nindent 6 }}
   template:
     metadata:
-      labels: {{ .Values.deployment.labels }}
+      labels:
+        {{- toYaml .Values.deployment.labels | nindent 8 }}
     spec:
-      nodeName: {{ default "local-node" .Values.nodeName }}
+      nodeName: {{default "local-node" .Values.nodeName}}
       containers:
-        - name: {{ .Chart.Name }}-api
-          image: '{{ .Values.deployment.image.repository }}:{{ .Values.deployment.image.tag | default .Chart.AppVersion }}'
+        - name: {{.Chart.Name}}
+          image: "{{.Values.deployment.image.repository}}:{{.Values.deployment.image.tag | default .Chart.AppVersion}}"
           ports:
-            - containerPort: {{ .Values.service.port }}
+            - containerPort: {{.Values.service.port}}
           env:
-            - name: PUPPETEER_SKIP_DOWNLOAD
-              value: "true"
             # Frontend url
             - name: CORS_ORIGIN
               value: {{ required "A valid frontend url is required." .Values.frontend }}
-          imagePullPolicy: {{ .Values.deployment.image.imagePullPolicy }}
+          imagePullPolicy: {{.Values.deployment.image.imagePullPolicy}}
           volumeMounts:
-            # Mount the volume for the container
-            - mountPath: "./assets"
-              name: {{ .Values.pv.name }}
+            - mountPath: "/usr/src/app/assets"
+              {{- if eq .Values.storage.pv.type "local" }}
+              name: {{.Values.storage.pv.local.name}}
+              {{- else if eq .Values.storage.pv.type "nfs" }}
+              name: {{.Values.storage.pv.nfs.name}}
+              {{- end }}
+          resources:
+            requests:
+              cpu: {{.Values.deployment.resources.requests.cpu}}
+              memory: {{.Values.deployment.resources.requests.memory}}
+            limits:
+              cpu: {{.Values.deployment.resources.limits.cpu}}
+              memory: {{.Values.deployment.resources.limits.memory}}
+          livenessProbe:
+            httpGet:
+              path: {{.Values.probes.livenessPath}}
+              port: {{.Values.service.port}}
+            initialDelaySeconds: {{.Values.probes.initialDelaySeconds}}
+            periodSeconds: {{.Values.probes.periodSeconds}}
+          readinessProbe:
+            httpGet:
+              path: {{.Values.probes.readinessPath}}
+              port: {{.Values.service.port}}
+            initialDelaySeconds: {{.Values.probes.initialDelaySeconds}}
+            periodSeconds: {{.Values.probes.periodSeconds}}
       volumes:
-        - name: {{ .Values.pv.name }}
+        {{- if eq .Values.storage.pv.type "local" }}
+        - name: {{.Values.storage.pv.local.name}}
           persistentVolumeClaim:
-            claimName: {{ .Values.pvc.name }}
+            claimName: {{.Values.storage.pvc.name}}
+        {{- else if eq .Values.storage.pv.type "nfs" }}
+        - name: {{.Values.storage.pv.nfs.name}}
+          persistentVolumeClaim:
+            claimName: {{.Values.storage.pvc.name}}
+        {{- end }}
+  strategy:
+    type: {{.Values.deployment.strategy.type}}
+    rollingUpdate:
+      maxUnavailable:
+        {{.Values.deployment.strategy.rollingUpdate.maxUnavailable}}
+      maxSurge: {{.Values.deployment.strategy.rollingUpdate.maxSurge}}

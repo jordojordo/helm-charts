@@ -14,15 +14,3 @@ helm repo add jordojordo https://jordojordo.github.io/helm-charts
 If you had already added this repo earlier, run `helm repo update` to retrieve
 the latest versions of the packages.  You can then run `helm search repo
 jordojordo` to see the charts.
-
-To install the `daphine` chart:
-
-```console
-helm install daphine jordojordo/daphine
-```
-
-To uninstall the chart:
-
-```console
-helm delete daphine
-```

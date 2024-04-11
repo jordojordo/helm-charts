@@ -1,18 +1,47 @@
+{{- if eq .Values.storage.pv.type "local" }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ .Values.pv.name }}
+  name: {{.Values.storage.pv.local.name}}
   labels:
-    type: {{ .Values.pv.type }}
+    type: {{.Values.storage.pv.type}}
 spec:
   capacity:
-    storage: {{ .Values.pv.storage }}
-  volumeMode: {{ .Values.pv.volumeMode }}
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: {{ .Values.storageClassName }}
+    storage: {{.Values.storage.pv.local.storage}}
+  volumeMode: {{.Values.storage.pv.local.volumeMode}}
+  accessModes: {{toYaml .Values.storage.pv.local.accessModes | nindent 4}}
+  persistentVolumeReclaimPolicy: {{.Values.storage.pv.local.reclaimPolicy}}
+  storageClassName: {{.Values.storage.pv.local.storageClassName}}
   hostPath:
-    # Path of the data within the cluster
-    path: {{ .Values.pv.hostPath }}
-  nodeAffinity: {{ .Values.pv.nodeAffinity }}
+    path: {{.Values.storage.pv.local.hostPath}}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        {{- range .Values.storage.pv.local.nodeAffinity.required.nodeSelectorTerms }}
+        - matchExpressions:
+          {{- range .matchExpressions }}
+          - key: {{ .key }}
+            operator: {{ .operator }}
+            values:
+              {{- range .values }}
+              - {{ . }}
+              {{- end }}
+          {{- end }}
+        {{- end }}
+{{- else if eq .Values.storage.pv.type "nfs" }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.storage.pv.nfs.name }}
+  labels:
+    type: {{.Values.storage.pv.type}}
+spec:
+  capacity:
+    storage: {{ .Values.storage.pv.nfs.storage }}
+  accessModes: {{toYaml .Values.storage.pv.nfs.accessModes | nindent 4}}
+  storageClassName: {{ .Values.storage.pv.nfs.storageClassName }}
+  nfs:
+    readOnly: {{ .Values.storage.pv.nfs.readOnly }}
+    server: {{ .Values.storage.pv.nfs.server }}
+    path: {{ .Values.storage.pv.nfs.path }}
+{{- end }}
