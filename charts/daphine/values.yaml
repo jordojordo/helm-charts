@@ -30,6 +30,10 @@ service:
   port: 3000
 
 storage:
+  useExistingPV: false
+  existingPVName: ""
+  useExistingPVC: false
+  existingPVCName: ""
   pv:
     type: "local" # Default to local. Other option can be 'nfs'
     local:

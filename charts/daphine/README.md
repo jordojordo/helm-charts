@@ -29,12 +29,16 @@ The following table lists the configurable parameters of the Daphine chart and t
 | `deployment.replicaCount`          | Number of API replicas to deploy                    | `3`                              |
 | `deployment.image.repository`      | Container image repository                          | `"ghcr.io/jordojordo/daphine"`   |
 | `deployment.image.pullPolicy`      | Image pull policy                                   | `"IfNotPresent"`                 |
-| `deployment.image.tag`             | Image tag (defaults to app version)                 | `"0.2.0"`                        |
+| `deployment.image.tag`             | Image tag (defaults to app version)                 | `"0.2.1"`                        |
 | `deployment.resources`             | CPU/Memory resource requests/limits                 | `{ limits: { cpu: 200m, memory: 100Mi }, requests: { cpu: 100m, memory: 50Mi } }` |
 | `deployment.securityContext`       | Security context for the pod                        | `{ runAsNonRoot: true, runAsUser: 1001 }` |
 | `deployment.strategy`              | Deployment strategy                                 | `{ type: RollingUpdate, rollingUpdate: { maxUnavailable: 1, maxSurge: 2 } }` |
 | `service.type`                     | Kubernetes Service type                             | `"ClusterIP"`                    |
 | `service.port`                     | Service port                                        | `3000`                           |
+| `storage.useExistingPV`            | Use an existing Persistent Volume                   | `false`                          |
+| `storage.existingPVName`           | Name of the existing Persistent Volume to use       | ""                               |
+| `storage.useExistingPVC`           | Use an existing Persistent Volume Claim             | `false`                          |
+| `storage.existingPVCName`          | Name of the existing Persistent Volume Claim to use | ""                               |
 | `storage.pv.type`                  | Type of persistent volume (local or nfs)            | `"local"`                        |
 | `storage.pv.local.*`               | Local volume settings (if `pv.type` is local)       | Detailed settings in `values.yaml` |
 | `storage.pv.nfs.*`                 | NFS volume settings (if `pv.type` is nfs)           | Uncomment and configure in `values.yaml` |
@@ -43,6 +47,10 @@ The following table lists the configurable parameters of the Daphine chart and t
 | `probes.readinessPath`             | Path for readiness probe                            | `"/ready"`                       |
 | `probes.initialDelaySeconds`       | Initial delay before starting the probes            | `10`                             |
 | `probes.periodSeconds`             | How often to perform the probe                      | `5`                              |
+
+### Using Existing Persistent Volumes and Claims
+
+To use existing PVs or PVCs, you can set the appropriate flags (`useExistingPV` and `useExistingPVC`) and provide the names of the resources (`existingPVName` and `existingPVCName`). This allows the chart to skip creating new PVs or PVCs and use the specified ones instead.
 
 ### Configuring NFS Storage
 

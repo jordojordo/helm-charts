@@ -1,4 +1,4 @@
-{{- if eq .Values.storage.pv.type "local" }}
+{{- if and (eq .Values.storage.pv.type "local") (not .Values.storage.useExistingPV) }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -28,7 +28,7 @@ spec:
               {{- end }}
           {{- end }}
         {{- end }}
-{{- else if eq .Values.storage.pv.type "nfs" }}
+{{- else if and (eq .Values.storage.pv.type "nfs") (not .Values.storage.useExistingPV) }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:

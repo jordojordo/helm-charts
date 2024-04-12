@@ -18,7 +18,6 @@ spec:
           ports:
             - containerPort: {{.Values.service.port}}
           env:
-            # Frontend url
             - name: CORS_ORIGIN
               value: {{ required "A valid frontend url is required." .Values.frontend }}
           imagePullPolicy: {{.Values.deployment.image.imagePullPolicy}}
@@ -49,15 +48,9 @@ spec:
             initialDelaySeconds: {{.Values.probes.initialDelaySeconds}}
             periodSeconds: {{.Values.probes.periodSeconds}}
       volumes:
-        {{- if eq .Values.storage.pv.type "local" }}
-        - name: {{.Values.storage.pv.local.name}}
+        - name: {{ if .Values.storage.useExistingPV }}{{ .Values.storage.existingPVName }}{{ else if eq .Values.storage.pv.type "local" }}{{ .Values.storage.pv.local.name }}{{ else if eq .Values.storage.pv.type "nfs" }}{{ .Values.storage.pv.nfs.name }}{{ end }}
           persistentVolumeClaim:
-            claimName: {{.Values.storage.pvc.name}}
-        {{- else if eq .Values.storage.pv.type "nfs" }}
-        - name: {{.Values.storage.pv.nfs.name}}
-          persistentVolumeClaim:
-            claimName: {{.Values.storage.pvc.name}}
-        {{- end }}
+            claimName: {{ if .Values.storage.useExistingPVC }}{{ .Values.storage.existingPVCName }}{{ else }}{{ .Values.storage.pvc.name }}{{ end }}
   strategy:
     type: {{.Values.deployment.strategy.type}}
     rollingUpdate:

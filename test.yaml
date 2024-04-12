@@ -1,0 +1,5 @@
+storage:
+  useExistingPV: true
+  existingPVName: "juche-pv"
+  useExistingPVC: true
+  existingPVCName: "juche-pvc"
