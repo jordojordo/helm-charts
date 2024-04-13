@@ -30,43 +30,49 @@ service:
   port: 3000
 
 storage:
-  useExistingPV: false
-  existingPVName: ""
-  useExistingPVC: false
-  existingPVCName: ""
+  useExisting:
+    pv: false
+    pvName: ""  # Specify if useExisting.pv is true
+    pvc: false
+    pvcName: ""  # Specify if useExisting.pvc is true
   pv:
-    type: "local" # Default to local. Other option can be 'nfs'
+    type: "local" # Default to local. Set to 'nfs' for NFS.
     local:
-      name: daphine-pv
-      storage: 2Gi
+      spec:
+        name: daphine-pv
+        storage: 2Gi
+        storageClassName: local-path
+        volumeMode: Filesystem
+        reclaimPolicy: Retain
+        accessModes:
+          - ReadWriteOnce
+        hostPath: "/mnt/assets"
+        nodeAffinity:
+          required:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: "kubernetes.io/hostname"
+                    operator: In
+                    values:
+                      - local-node
+    nfs:
+      spec:
+        name: daphine-nfs-pv
+        storage: 2Gi
+        storageClassName: 'nfs-storage'
+        accessModes:
+          - ReadWriteOnce
+        nfs:
+          server: nfs-server.example.com
+          path: "/path/to/nfs"
+          readOnly: false
+  pvc:
+    spec:
+      name: daphine-pvc
+      storageRequest: 2Gi
       storageClassName: local-path
-      volumeMode: Filesystem
-      reclaimPolicy: Retain
       accessModes:
         - ReadWriteOnce
-      hostPath: "/mnt/assets"
-      nodeAffinity:
-        required:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: "kubernetes.io/hostname"
-                  operator: In
-                  values:
-                    - local-node
-    # nfs:
-    #   server: nfs-server.example.com
-    #   path: /path/to/nfs
-    #   readOnly: false
-    #   storage: 2Gi
-    #   storageClassName: 'nfs-storage'
-    #   accessModes:
-    #     - ReadWriteOnce
-  pvc:
-    name: daphine-pvc
-    storageRequest: 2Gi
-    storageClassName: local-path
-    accessModes:
-      - ReadWriteOnce
 
 probes:
   livenessPath: "/health"

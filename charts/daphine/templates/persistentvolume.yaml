@@ -1,23 +1,24 @@
-{{- if and (eq .Values.storage.pv.type "local") (not .Values.storage.useExistingPV) }}
+{{- if not .Values.storage.useExisting.pv }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{.Values.storage.pv.local.name}}
+  name: {{ if eq .Values.storage.pv.type "local" }}{{ .Values.storage.pv.local.spec.name }}{{ else }}{{ .Values.storage.pv.nfs.spec.name }}{{ end }}
   labels:
     type: {{.Values.storage.pv.type}}
+{{- if eq .Values.storage.pv.type "local" }}
 spec:
   capacity:
-    storage: {{.Values.storage.pv.local.storage}}
-  volumeMode: {{.Values.storage.pv.local.volumeMode}}
-  accessModes: {{toYaml .Values.storage.pv.local.accessModes | nindent 4}}
-  persistentVolumeReclaimPolicy: {{.Values.storage.pv.local.reclaimPolicy}}
-  storageClassName: {{.Values.storage.pv.local.storageClassName}}
+    storage: {{.Values.storage.pv.local.spec.storage}}
+  volumeMode: {{.Values.storage.pv.local.spec.volumeMode}}
+  accessModes: {{toYaml .Values.storage.pv.local.spec.accessModes | nindent 4}}
+  persistentVolumeReclaimPolicy: {{.Values.storage.pv.local.spec.reclaimPolicy}}
+  storageClassName: {{.Values.storage.pv.local.spec.storageClassName}}
   hostPath:
-    path: {{.Values.storage.pv.local.hostPath}}
+    path: {{.Values.storage.pv.local.spec.hostPath}}
   nodeAffinity:
     required:
       nodeSelectorTerms:
-        {{- range .Values.storage.pv.local.nodeAffinity.required.nodeSelectorTerms }}
+        {{- range .Values.storage.pv.local.spec.nodeAffinity.required.nodeSelectorTerms }}
         - matchExpressions:
           {{- range .matchExpressions }}
           - key: {{ .key }}
@@ -28,20 +29,15 @@ spec:
               {{- end }}
           {{- end }}
         {{- end }}
-{{- else if and (eq .Values.storage.pv.type "nfs") (not .Values.storage.useExistingPV) }}
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: {{ .Values.storage.pv.nfs.name }}
-  labels:
-    type: {{.Values.storage.pv.type}}
+{{- else if eq .Values.storage.pv.type "nfs" }}
 spec:
   capacity:
-    storage: {{ .Values.storage.pv.nfs.storage }}
-  accessModes: {{toYaml .Values.storage.pv.nfs.accessModes | nindent 4}}
-  storageClassName: {{ .Values.storage.pv.nfs.storageClassName }}
+    storage: {{ .Values.storage.pv.nfs.spec.storage }}
+  accessModes: {{toYaml .Values.storage.pv.nfs.spec.accessModes | nindent 4}}
+  storageClassName: {{ .Values.storage.pv.nfs.spec.storageClassName }}
   nfs:
-    readOnly: {{ .Values.storage.pv.nfs.readOnly }}
-    server: {{ .Values.storage.pv.nfs.server }}
-    path: {{ .Values.storage.pv.nfs.path }}
+    readOnly: {{ .Values.storage.pv.nfs.spec.nfs.readOnly }}
+    server: {{ .Values.storage.pv.nfs.spec.nfs.server }}
+    path: {{ .Values.storage.pv.nfs.spec.nfs.path }}
+{{- end }}
 {{- end }}

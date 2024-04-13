@@ -17,6 +17,8 @@ helm install my-daphine /path/to/daphine/chart
 
 This command deploys Daphine on the Kubernetes cluster with the default configuration. The [Parameters](#parameters) section lists the parameters that can be configured during installation.
 
+# Daphine Chart Documentation
+
 ## Parameters
 
 The following table lists the configurable parameters of the Daphine chart and their default values.
@@ -35,26 +37,25 @@ The following table lists the configurable parameters of the Daphine chart and t
 | `deployment.strategy`              | Deployment strategy                                 | `{ type: RollingUpdate, rollingUpdate: { maxUnavailable: 1, maxSurge: 2 } }` |
 | `service.type`                     | Kubernetes Service type                             | `"ClusterIP"`                    |
 | `service.port`                     | Service port                                        | `3000`                           |
-| `storage.useExistingPV`            | Use an existing Persistent Volume                   | `false`                          |
-| `storage.existingPVName`           | Name of the existing Persistent Volume to use       | ""                               |
-| `storage.useExistingPVC`           | Use an existing Persistent Volume Claim             | `false`                          |
-| `storage.existingPVCName`          | Name of the existing Persistent Volume Claim to use | ""                               |
+| `storage.useExisting.pv`           | Use an existing Persistent Volume                   | `false`                          |
+| `storage.pvName`                   | Name of the existing Persistent Volume to use       | ""                               |
+| `storage.useExisting.pvc`          | Use an existing Persistent Volume Claim             | `false`                          |
+| `storage.pvcName`                  | Name of the existing Persistent Volume Claim to use | ""                               |
 | `storage.pv.type`                  | Type of persistent volume (local or nfs)            | `"local"`                        |
-| `storage.pv.local.*`               | Local volume settings (if `pv.type` is local)       | Detailed settings in `values.yaml` |
-| `storage.pv.nfs.*`                 | NFS volume settings (if `pv.type` is nfs)           | Uncomment and configure in `values.yaml` |
-| `storage.pvc.*`                    | Persistent Volume Claim settings                    | Detailed settings in `values.yaml` |
+| `storage.pv.spec.*`                | Specifications for PV configuration                 | Detailed settings in `values.yaml` |
+| `storage.pvc.spec.*`               | Persistent Volume Claim settings                    | Detailed settings in `values.yaml` |
 | `probes.livenessPath`              | Path for liveness probe                             | `"/health"`                      |
 | `probes.readinessPath`             | Path for readiness probe                            | `"/ready"`                       |
 | `probes.initialDelaySeconds`       | Initial delay before starting the probes            | `10`                             |
-| `probes.periodSeconds`             | How often to perform the probe                      | `5`                              |
+| `probes.periodSeconds`             | How often to perform the probe                      | `30`                             |
 
 ### Using Existing Persistent Volumes and Claims
 
-To use existing PVs or PVCs, you can set the appropriate flags (`useExistingPV` and `useExistingPVC`) and provide the names of the resources (`existingPVName` and `existingPVCName`). This allows the chart to skip creating new PVs or PVCs and use the specified ones instead.
+To use existing PVs or PVCs, you can set the appropriate flags (`useExisting.pv` and `useExisting.pvc`) and provide the names of the resources (`pvName` and `pvcName`). This allows the chart to skip creating new PVs or PVCs and use the specified ones instead.
 
 ### Configuring NFS Storage
 
-If you choose to use NFS instead of a local volume, you need to uncomment and configure the NFS-related settings in `values.yaml`. Specify the NFS server and path details accordingly.
+If you choose to use NFS instead of a local volume, you need to specify the NFS-related settings in `values.yaml`. Configure the NFS server, path, and other required details accordingly.
 
 ### Custom Configuration Example
 
@@ -63,6 +64,10 @@ Override default values during installation like this:
 ```bash
 helm install my-daphine /path/to/daphine/chart --set deployment.replicaCount=5, nodeName=some-other-node
 ```
+
+### Service Configuration
+
+The chart includes a `ClusterIP` service by default to expose the Node.js Express API. The service listens on port `3000`. The service can be customized by adjusting the `service.type` and `service.port` in `values.yaml`.
 
 ## Post-Installation Verification
 
