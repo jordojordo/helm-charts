@@ -3,6 +3,17 @@ entries:
   daphine:
   - apiVersion: v2
     appVersion: 0.2.1
+    created: "2024-04-13T10:18:02.888665365Z"
+    description: An API for streaming music and videos
+    digest: e9aa2dd70d92b3e9fd4a33e0d616c6181d1440fc63891b6d2c2fbed549afe2c4
+    home: https://github.com/jordojordo/daphine
+    name: daphine
+    type: application
+    urls:
+    - https://github.com/jordojordo/helm-charts/releases/download/daphine-0.2.3/daphine-0.2.3.tgz
+    version: 0.2.3
+  - apiVersion: v2
+    appVersion: 0.2.1
     created: "2024-04-12T09:58:54.975325779Z"
     description: An API for streaming music and videos
     digest: 5965fb039c096876830786bf662f2037926107699666fa5e236d92a2fd0acde8
@@ -45,4 +56,4 @@ entries:
     urls:
     - https://github.com/jordojordo/helm-charts/releases/download/daphine-0.1.0/daphine-0.1.0.tgz
     version: 0.1.0
-generated: "2024-04-12T09:58:54.975351867Z"
+generated: "2024-04-13T10:18:02.888691204Z"
