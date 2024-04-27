@@ -2,38 +2,32 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ if eq .Values.storage.pv.type "local" }}{{ .Values.storage.pv.local.spec.name }}{{ else }}{{ .Values.storage.pv.nfs.spec.name }}{{ end }}
+  name: {{ include "daphine.fullname" . }}-pv
   labels:
-    type: {{.Values.storage.pv.type}}
+    type: {{ .Values.storage.pv.type }}
+    {{- include "daphine.labels" . | nindent 4 }}
+
 {{- if eq .Values.storage.pv.type "local" }}
 spec:
   capacity:
-    storage: {{.Values.storage.pv.local.spec.storage}}
-  volumeMode: {{.Values.storage.pv.local.spec.volumeMode}}
-  accessModes: {{toYaml .Values.storage.pv.local.spec.accessModes | nindent 4}}
-  persistentVolumeReclaimPolicy: {{.Values.storage.pv.local.spec.reclaimPolicy}}
-  storageClassName: {{.Values.storage.pv.local.spec.storageClassName}}
+    storage: {{ .Values.storage.pv.local.spec.storage }}
+  volumeMode: {{ .Values.storage.pv.local.spec.volumeMode }}
+  accessModes: 
+    {{- toYaml .Values.storage.pv.local.spec.accessModes | nindent 4 }}
+  persistentVolumeReclaimPolicy: {{ .Values.storage.pv.local.spec.reclaimPolicy }}
+  storageClassName: {{ .Values.storage.pv.local.spec.storageClassName }}
   hostPath:
-    path: {{.Values.storage.pv.local.spec.hostPath}}
+    path: {{ .Values.storage.pv.local.spec.hostPath }}
   nodeAffinity:
     required:
       nodeSelectorTerms:
-        {{- range .Values.storage.pv.local.spec.nodeAffinity.required.nodeSelectorTerms }}
-        - matchExpressions:
-          {{- range .matchExpressions }}
-          - key: {{ .key }}
-            operator: {{ .operator }}
-            values:
-              {{- range .values }}
-              - {{ . }}
-              {{- end }}
-          {{- end }}
-        {{- end }}
+        {{- toYaml .Values.storage.pv.local.spec.nodeAffinity.required.nodeSelectorTerms | nindent 8 }}
 {{- else if eq .Values.storage.pv.type "nfs" }}
 spec:
   capacity:
     storage: {{ .Values.storage.pv.nfs.spec.storage }}
-  accessModes: {{toYaml .Values.storage.pv.nfs.spec.accessModes | nindent 4}}
+  accessModes: 
+    {{- toYaml .Values.storage.pv.nfs.spec.accessModes | nindent 4 }}
   storageClassName: {{ .Values.storage.pv.nfs.spec.storageClassName }}
   nfs:
     readOnly: {{ .Values.storage.pv.nfs.spec.nfs.readOnly }}

@@ -2,11 +2,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Values.storage.pvc.spec.name }}
+  name: {{ include "daphine.fullname" . }}-pvc
 spec:
-  storageClassName: {{.Values.storage.pvc.spec.storageClassName}}
-  accessModes: {{toYaml .Values.storage.pvc.spec.accessModes | nindent 4}}
+  storageClassName: {{ .Values.storage.pvc.spec.storageClassName }}
+  accessModes:
+    {{- toYaml .Values.storage.pvc.spec.accessModes | nindent 4 }}
   resources:
     requests:
-      storage: {{.Values.storage.pvc.spec.storageRequest}}
+      storage: {{ .Values.storage.pvc.spec.storageRequest }}
 {{- end }}

@@ -1,3 +1,4 @@
+```
 # Daphine Helm Chart
 
 Daphine is a Node.js Express API designed to stream music and videos. This Helm chart simplifies the deployment of Daphine on Kubernetes clusters.
@@ -17,64 +18,75 @@ helm install my-daphine /path/to/daphine/chart
 
 This command deploys Daphine on the Kubernetes cluster with the default configuration. The [Parameters](#parameters) section lists the parameters that can be configured during installation.
 
-# Daphine Chart Documentation
-
 ## Parameters
 
 The following table lists the configurable parameters of the Daphine chart and their default values.
 
-| Parameter                          | Description                                         | Default                          |
-|------------------------------------|-----------------------------------------------------|----------------------------------|
-| `frontend`                         | Frontend URL required for CORS                      | `"https://example.com"`          |
-| `nodeName`                         | Preferred node to deploy the API                    | `"local-node"`                   |
-| `deployment.labels`                | Labels to apply to the Deployment                   | `{ yokanga.xyz/api: daphine }`   |
-| `deployment.replicaCount`          | Number of API replicas to deploy                    | `3`                              |
-| `deployment.image.repository`      | Container image repository                          | `"ghcr.io/jordojordo/daphine"`   |
-| `deployment.image.pullPolicy`      | Image pull policy                                   | `"IfNotPresent"`                 |
-| `deployment.image.tag`             | Image tag (defaults to app version)                 | `"0.2.1"`                        |
-| `deployment.resources`             | CPU/Memory resource requests/limits                 | `{ limits: { cpu: 200m, memory: 100Mi }, requests: { cpu: 100m, memory: 50Mi } }` |
-| `deployment.securityContext`       | Security context for the pod                        | `{ runAsNonRoot: true, runAsUser: 1001 }` |
-| `deployment.strategy`              | Deployment strategy                                 | `{ type: RollingUpdate, rollingUpdate: { maxUnavailable: 1, maxSurge: 2 } }` |
-| `service.type`                     | Kubernetes Service type                             | `"ClusterIP"`                    |
-| `service.port`                     | Service port                                        | `3000`                           |
-| `storage.useExisting.pv`           | Use an existing Persistent Volume                   | `false`                          |
-| `storage.pvName`                   | Name of the existing Persistent Volume to use       | ""                               |
-| `storage.useExisting.pvc`          | Use an existing Persistent Volume Claim             | `false`                          |
-| `storage.pvcName`                  | Name of the existing Persistent Volume Claim to use | ""                               |
-| `storage.pv.type`                  | Type of persistent volume (local or nfs)            | `"local"`                        |
-| `storage.pv.spec.*`                | Specifications for PV configuration                 | Detailed settings in `values.yaml` |
-| `storage.pvc.spec.*`               | Persistent Volume Claim settings                    | Detailed settings in `values.yaml` |
-| `probes.livenessPath`              | Path for liveness probe                             | `"/health"`                      |
-| `probes.readinessPath`             | Path for readiness probe                            | `"/ready"`                       |
-| `probes.initialDelaySeconds`       | Initial delay before starting the probes            | `10`                             |
-| `probes.periodSeconds`             | How often to perform the probe                      | `30`                             |
+| Parameter                                   | Description                                            | Default                          |
+|---------------------------------------------|--------------------------------------------------------|----------------------------------|
+| `frontend`                                  | Frontend URL required for CORS                         | `"https://example.com"`          |
+| `nodeName`                                  | Preferred node to deploy the API                       | `""`                             |
+| `replicaCount`                              | Number of API replicas to deploy                       | `1`                              |
+| `image.repository`                          | Container image repository                             | `"ghcr.io/jordojordo/daphine"`   |
+| `image.pullPolicy`                          | Image pull policy                                      | `"IfNotPresent"`                 |
+| `image.tag`                                 | Image tag (defaults to the chart appVersion)           | `""`                             |
+| `imagePullSecrets`                          | Specify image pull secrets                             | `[]`                             |
+| `nameOverride`                              | Override the application name                          | `""`                             |
+| `fullnameOverride`                          | Override the full application name                     | `""`                             |
+| `serviceAccount.create`                     | Specifies whether a service account should be created  | `true`                           |
+| `serviceAccount.automount`                  | Automount service account token                        | `true`                           |
+| `serviceAccount.annotations`                | Annotations to add to the service account              | `{}`                             |
+| `serviceAccount.name`                       | The name of the service account to use                 | `""`                             |
+| `podAnnotations`                            | Annotations to add to each pod                         | `{}`                             |
+| `podLabels`                                 | Additional labels to add to each pod                   | `{}`                             |
+| `podSecurityContext`                        | Security contexts to set at the pod level              | `{}`                             |
+| `securityContext`                           | Security settings for a pod                            | `{}`                             |
+| `strategy`                                  | Deployment strategy                                    | `{}`                             |
+| `service.type`                              | Kubernetes Service type                                | `"ClusterIP"`                    |
+| `service.port`                              | Service port                                           | `3000`                           |
+| `ingress.enabled`                           | Enable ingress controller                              | `false`                          |
+| `ingress.className`                         | Ingress class name                                     | `""`                             |
+| `ingress.hosts`                             | Hosts used by the ingress                              | `[{"host": "chart-example.local", "paths": [{"path": "/", "pathType": "ImplementationSpecific"}]}]` |
+| `ingress.tls`                               | TLS settings for ingress                               | `[]`                             |
+| `resources`                                 | CPU/Memory resource requests/limits                    | `{}`                             |
+| `livenessProbe`                             | Liveness probe settings                                | `{httpGet: {path: "/health", port: "http"}}` |
+| `readinessProbe`                            | Readiness probe settings                               | `{httpGet: {path: "/ready", port: "http"}}` |
+| `autoscaling.enabled`                       | Whether horizontal pod autoscaling is enabled          | `false`                          |
+| `autoscaling.minReplicas`                   | Minimum number of replicas                             | `1`                              |
+| `autoscaling.maxReplicas`                   | Maximum number of replicas                             | `100`                            |
+| `autoscaling.targetCPUUtilizationPercentage`| Target CPU utilization percentage                       | `80`                             |
+| `nodeSelector`                              | Node labels for pod assignment                         | `{}`                             |
+| `tolerations`                               | Tolerations for pod assignment                         | `[]`                             |
+| `affinity`                                  | Affinity settings for pod assignment                   | `{}`                             |
+| `storage.useExisting.pv`                    | Whether to use an existing PV                          | `false`                          |
+| `storage.useExisting.pvc`                   | Whether to use an existing PVC                         | `false`                          |
+| `storage.pv.type`                           | Type of persistent volume (local or NFS)               | `"local"`                        |
+| `storage.pv.spec`                           | Specifications for persistent volume                    | `{}` (see values.yaml for details) |
+| `storage.pvc.spec`                          | Specifications for PVC                                 | `{}` (see values.yaml for details) |
 
-### Using Existing Persistent Volumes and Claims
+### Advanced Configuration
 
-To use existing PVs or PVCs, you can set the appropriate flags (`useExisting.pv` and `useExisting.pvc`) and provide the names of the resources (`pvName` and `pvcName`). This allows the chart to skip creating new PVs or PVCs and use the specified ones instead.
-
-### Configuring NFS Storage
-
-If you choose to use NFS instead of a local volume, you need to specify the NFS-related settings in `values.yaml`. Configure the NFS server, path, and other required details accordingly.
+- **Persistent Volumes**: Specify whether to use existing PVs and PVCs by setting the respective `useExisting.pv` and `useExisting.pvc` parameters.
+- **NFS Configuration**: If using NFS, provide the NFS server details and path in `values.yaml`.
 
 ### Custom Configuration Example
 
 Override default values during installation like this:
 
 ```bash
-helm install my-daphine /path/to/daphine/chart --set deployment.replicaCount=5, nodeName=some-other-node
+helm install my-daphine /path/to/daphine/chart --set replicaCount=5, nodeName=some-other-node
 ```
 
 ### Service Configuration
 
-The chart includes a `ClusterIP` service by default to expose the Node.js Express API. The service listens on port `3000`. The service can be customized by adjusting the `service.type` and `service.port` in `values.yaml`.
+The chart includes a `ClusterIP` service by default to expose the Node.js Express API. This can be customized by adjusting the `service.type` and `service.port` in `values.yaml`.
 
 ## Post-Installation Verification
 
 After installation, verify the deployment with the following command:
 
 ```bash
-kubectl get all -l "yokanga.xyz/api=daphine"
+kubectl get all -l "app.kubernetes.io/name=daphine"
 ```
 
 ## Upgrading
@@ -97,4 +109,5 @@ This command removes all the Kubernetes components associated with the chart and
 
 ## Conclusion
 
-After deployment, your Node.js API will be accessible within your cluster and ready to stream music and videos. Make sure to review your Kubernetes and Helm setup to ensure everything is configured correctly for network and storage access.
+Deploying Daphine using this Helm chart will provide you with a robust solution for streaming music and videos within your Kubernetes cluster. Ensure your environment is configured to handle network and storage resources as specified in `values.yaml`.
+```
