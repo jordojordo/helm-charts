@@ -1,55 +1,75 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{.Chart.Name}}
+  name: {{ include "daphine.fullname" . }}
+  labels:
+    {{- include "daphine.labels" . | nindent 4 }}
 spec:
-  replicas: {{.Values.deployment.replicaCount}}
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
   selector:
-    matchLabels: {{- toYaml .Values.deployment.labels | nindent 6 }}
+    matchLabels:
+      {{- include "daphine.selectorLabels" . | nindent 6 }}
+  strategy:
+    {{- toYaml .Values.strategy | nindent 4 }}
   template:
     metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       labels:
-        {{- toYaml .Values.deployment.labels | nindent 8 }}
+        {{- include "daphine.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
-      nodeName: {{default "local-node" .Values.nodeName}}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.nodeName }}
+      nodeName: {{ .Values.nodeName }}
+      {{- end }}
+      serviceAccountName: {{ include "daphine.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{.Chart.Name}}
-          image: "{{.Values.deployment.image.repository}}:{{.Values.deployment.image.tag | default .Chart.AppVersion}}"
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: {{.Values.service.port}}
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
           env:
             - name: CORS_ORIGIN
               value: {{ required "A valid frontend url is required." .Values.frontend }}
-          imagePullPolicy: {{.Values.deployment.image.imagePullPolicy}}
-          volumeMounts:
-            - mountPath: "/usr/src/app/assets"
-              name: {{ if .Values.storage.useExisting.pv }}{{ .Values.storage.useExisting.pvName }}{{ else if eq .Values.storage.pv.type "local" }}{{ .Values.storage.pv.local.spec.name }}{{ else }}{{ .Values.storage.pv.nfs.spec.name }}{{ end }}
-          resources:
-            requests:
-              cpu: {{.Values.deployment.resources.requests.cpu}}
-              memory: {{.Values.deployment.resources.requests.memory}}
-            limits:
-              cpu: {{.Values.deployment.resources.limits.cpu}}
-              memory: {{.Values.deployment.resources.limits.memory}}
           livenessProbe:
-            httpGet:
-              path: {{.Values.probes.livenessPath}}
-              port: {{.Values.service.port}}
-            initialDelaySeconds: {{.Values.probes.initialDelaySeconds}}
-            periodSeconds: {{.Values.probes.periodSeconds}}
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
-            httpGet:
-              path: {{.Values.probes.readinessPath}}
-              port: {{.Values.service.port}}
-            initialDelaySeconds: {{.Values.probes.initialDelaySeconds}}
-            periodSeconds: {{.Values.probes.periodSeconds}}
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: {{ include "daphine.volumeName" . }}
+              mountPath: "/usr/src/app/assets"
       volumes:
-        - name: {{ if .Values.storage.useExisting.pv }}{{ .Values.storage.useExisting.pvName }}{{ else if eq .Values.storage.pv.type "local" }}{{ .Values.storage.pv.local.spec.name }}{{ else }}{{ .Values.storage.pv.nfs.spec.name }}{{ end }}
+        - name: {{ include "daphine.volumeName" . }}
           persistentVolumeClaim:
-            claimName: {{ if .Values.storage.useExisting.pvc }}{{ .Values.storage.useExisting.pvcName }}{{ else }}{{ .Values.storage.pvc.spec.name }}{{ end }}
-  strategy:
-    type: {{.Values.deployment.strategy.type}}
-    rollingUpdate:
-      maxUnavailable:
-        {{.Values.deployment.strategy.rollingUpdate.maxUnavailable}}
-      maxSurge: {{.Values.deployment.strategy.rollingUpdate.maxSurge}}
+            claimName: {{ include "daphine.pvcName" . }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

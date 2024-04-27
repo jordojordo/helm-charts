@@ -1,33 +1,93 @@
 frontend: "https://example.com" # Required for CORS
-nodeName: local-node
+nodeName: ""
 
-deployment:
-  labels: 
-    yokanga.xyz/api: daphine
-  replicaCount: 3
-  image:
-    repository: "ghcr.io/jordojordo/daphine"
-    pullPolicy: IfNotPresent
-    tag: 0.2.1
-  resources:
-    limits:
-      cpu: 200m
-      memory: 100Mi
-    requests:
-      cpu: 100m
-      memory: 50Mi
-  securityContext:
-    runAsNonRoot: true
-    runAsUser: 1001
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1
-      maxSurge: 2
+replicaCount: 1
+
+image:
+  repository: "ghcr.io/jordojordo/daphine"
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+strategy:
+  # type: RollingUpdate
+  # rollingUpdate:
+  #   maxUnavailable: 1
+  #   maxSurge: 2
 
 service:
   type: ClusterIP
   port: 3000
+
+ingress:
+  enabled: false
+  className: ""
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 100Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 50Mi
+
+livenessProbe:
+  httpGet:
+    path: "/health"
+    port: http
+readinessProbe:
+  httpGet:
+    path: "/ready"
+    port: http
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
 
 storage:
   useExisting:
@@ -39,9 +99,8 @@ storage:
     type: "local" # Default to local. Set to 'nfs' for NFS.
     local:
       spec:
-        name: daphine-pv
-        storage: 2Gi
-        storageClassName: local-path
+        storage: ""
+        storageClassName: ""
         volumeMode: Filesystem
         reclaimPolicy: Retain
         accessModes:
@@ -49,16 +108,15 @@ storage:
         hostPath: "/mnt/assets"
         nodeAffinity:
           required:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: "kubernetes.io/hostname"
-                    operator: In
-                    values:
-                      - local-node
+            nodeSelectorTerms: []
+              # - matchExpressions:
+              #     - key: "kubernetes.io/hostname"
+              #       operator: In
+              #       values:
+              #         - local-node
     nfs:
       spec:
-        name: daphine-nfs-pv
-        storage: 2Gi
+        storage: ""
         storageClassName: 'nfs-storage'
         accessModes:
           - ReadWriteOnce
@@ -68,14 +126,7 @@ storage:
           readOnly: false
   pvc:
     spec:
-      name: daphine-pvc
-      storageRequest: 2Gi
-      storageClassName: local-path
+      storageRequest: ""
+      storageClassName: ""
       accessModes:
         - ReadWriteOnce
-
-probes:
-  livenessPath: "/health"
-  readinessPath: "/ready"
-  initialDelaySeconds: 10
-  periodSeconds: 30
