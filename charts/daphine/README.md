@@ -1,4 +1,3 @@
-```
 # Daphine Helm Chart
 
 Daphine is a Node.js Express API designed to stream music and videos. This Helm chart simplifies the deployment of Daphine on Kubernetes clusters.
@@ -110,4 +109,3 @@ This command removes all the Kubernetes components associated with the chart and
 ## Conclusion
 
 Deploying Daphine using this Helm chart will provide you with a robust solution for streaming music and videos within your Kubernetes cluster. Ensure your environment is configured to handle network and storage resources as specified in `values.yaml`.
-```

@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "thothscript-operator.name" . }}
+  namespace: {{ include "thothscript-operator.namespace" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "thothscript-operator.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "thothscript-operator.name" . }}
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+            add:
+            - NET_BIND_SERVICE  # Required if binding to ports < 1024
+        env:
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.env.openaiApiKeySecret }}
+              key: OPENAI_API_KEY
+        ports:
+        - containerPort: {{ .Values.service.port }}
+        volumeMounts:
+        - name: writable-volume
+          mountPath: /app/data
+        - name: cache-volume
+          mountPath: /home/node/.cache/gptscript
+        - name: tmp-volume
+          mountPath: /tmp
+      volumes:
+      - name: writable-volume
+        emptyDir: {}
+      - name: cache-volume
+        emptyDir: {}
+      - name: tmp-volume
+        emptyDir: {}
