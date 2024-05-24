@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "thothscript.fullname" . }}
+  namespace: {{ include "thothscript.namespace" . }}
+  labels:
+    {{- include "thothscript.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "thothscript.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "thothscript.name" . }}
+    spec:
+      containers:
+      - name: thothscript
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: CLIENT_THOTHSCRIPT_API
+          value: {{ .Values.env.THOTHSCRIPT_API_HOST }}.{{ .Values.env.THOTHSCRIPT_API_NAMESPACE }}.svc.cluster.local:{{ .Values.env.THOTHSCRIPT_API_PORT }}
+        ports:
+        - containerPort: 80

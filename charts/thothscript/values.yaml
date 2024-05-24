@@ -1,0 +1,20 @@
+namespace: thothscript
+
+replicaCount: 1
+
+image:
+  repository: "ghcr.io/jordojordo/thothscript"
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+service:
+  type: ClusterIP
+  port: 8080
+
+env:
+  THOTHSCRIPT_API_HOST: thothscript-operator
+  THOTHSCRIPT_API_NAMESPACE: thothscript
+  THOTHSCRIPT_API_PORT: 3000
+
+resources: {}
