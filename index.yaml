@@ -70,6 +70,15 @@ entries:
     version: 0.1.0
   thothscript:
   - apiVersion: v2
+    appVersion: 0.1.2
+    created: "2024-05-27T23:30:57.337572338Z"
+    description: A Chatbot for the Thoth project
+    digest: 509d39d37dfbbc556ac5d42027647391b3648b7ebf8f33b1dbebdccea9f31dce
+    name: thothscript
+    urls:
+    - https://github.com/jordojordo/helm-charts/releases/download/thothscript-0.1.2/thothscript-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
     appVersion: 0.1.1
     created: "2024-05-27T23:28:58.101296003Z"
     description: A Chatbot for the Thoth project
@@ -89,4 +98,4 @@ entries:
     urls:
     - https://github.com/jordojordo/helm-charts/releases/download/thothscript-operator-0.1.0/thothscript-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-05-27T23:28:58.101312824Z"
+generated: "2024-05-27T23:30:57.337595691Z"
