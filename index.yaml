@@ -68,6 +68,16 @@ entries:
     urls:
     - https://github.com/jordojordo/helm-charts/releases/download/daphine-0.1.0/daphine-0.1.0.tgz
     version: 0.1.0
+  thothscript:
+  - apiVersion: v2
+    appVersion: 0.1.1
+    created: "2024-05-27T23:28:58.101296003Z"
+    description: A Chatbot for the Thoth project
+    digest: 21b4e35fa8700d56011a94bdc1455c5ad0ca4e111dc194aa3a02d394431929f3
+    name: thothscript
+    urls:
+    - https://github.com/jordojordo/helm-charts/releases/download/thothscript-0.1.1/thothscript-0.1.1.tgz
+    version: 0.1.1
   thothscript-operator:
   - apiVersion: v2
     appVersion: 0.1.0
@@ -79,4 +89,4 @@ entries:
     urls:
     - https://github.com/jordojordo/helm-charts/releases/download/thothscript-operator-0.1.0/thothscript-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-05-27T23:28:17.479285778Z"
+generated: "2024-05-27T23:28:58.101312824Z"
