@@ -9,12 +9,16 @@ image:
   tag: ""
 
 service:
-  type: ClusterIP
-  port: 8080
+  type: 
+  port: 80
 
 env:
-  THOTHSCRIPT_API_HOST: thothscript-operator
-  THOTHSCRIPT_API_NAMESPACE: thothscript
-  THOTHSCRIPT_API_PORT: 3000
+  THOTHSCRIPT_PROXY_SCHEME: "ws"
+  THOTHSCRIPT_PROXY_HOST: "localhost"
+  THOTHSCRIPT_PROXY_PORT: "80"
+  THOTHSCRIPT_PROXY_PATH: "/ws/"
+  THOTHSCRIPT_OPERATOR_HOST: "thothscript-operator"
+  THOTHSCRIPT_OPERATOR_NAMESPACE: "thothscript"
+  THOTHSCRIPT_OPERATOR_PORT: "3000"
 
 resources: {}

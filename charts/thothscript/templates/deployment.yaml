@@ -20,7 +20,19 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
-        - name: CLIENT_THOTHSCRIPT_API
-          value: {{ .Values.env.THOTHSCRIPT_API_HOST }}.{{ .Values.env.THOTHSCRIPT_API_NAMESPACE }}.svc.cluster.local:{{ .Values.env.THOTHSCRIPT_API_PORT }}
+        - name: CLIENT_THOTHSCRIPT_PROXY_SCHEME
+          value: "{{ .Values.env.THOTHSCRIPT_PROXY_SCHEME }}"
+        - name: CLIENT_THOTHSCRIPT_PROXY_HOST
+          value: "{{ .Values.env.THOTHSCRIPT_PROXY_HOST }}"
+        - name: CLIENT_THOTHSCRIPT_PROXY_PORT
+          value: "{{ .Values.env.THOTHSCRIPT_PROXY_PORT }}"
+        - name: CLIENT_THOTHSCRIPT_PROXY_PATH
+          value: "{{ .Values.env.THOTHSCRIPT_PROXY_PATH }}"
+        - name: CLIENT_THOTHSCRIPT_OPERATOR_HOST
+          value: "{{ .Values.env.THOTHSCRIPT_OPERATOR_HOST }}"
+        - name: CLIENT_THOTHSCRIPT_OPERATOR_NAMESPACE
+          value: "{{ .Values.env.THOTHSCRIPT_OPERATOR_NAMESPACE }}"
+        - name: CLIENT_THOTHSCRIPT_OPERATOR_PORT
+          value: "{{ .Values.env.THOTHSCRIPT_OPERATOR_PORT }}"
         ports:
         - containerPort: 80
