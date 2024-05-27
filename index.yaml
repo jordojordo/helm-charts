@@ -68,4 +68,15 @@ entries:
     urls:
     - https://github.com/jordojordo/helm-charts/releases/download/daphine-0.1.0/daphine-0.1.0.tgz
     version: 0.1.0
-generated: "2024-04-27T16:42:34.474999291Z"
+  thothscript-operator:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2024-05-27T23:28:17.479258968Z"
+    description: An operator for managing gptscripts in a Kubernetes cluster
+    digest: 4fb2b01eea028b4c6a3642946d8dca7dfe9b9b526ecb708ed352d4dc8ed5a9f7
+    name: thothscript-operator
+    type: application
+    urls:
+    - https://github.com/jordojordo/helm-charts/releases/download/thothscript-operator-0.1.0/thothscript-operator-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-05-27T23:28:17.479285778Z"
