@@ -1,0 +1,28 @@
+namespace: thothscript
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/jordojordo/thothscript-operator
+  pullPolicy: Always
+  tag: "0.1.0"
+
+service:
+  type: ClusterIP
+  port: 3000
+  nodePort: null
+
+serviceAccount:
+  create: true
+  name: thothscript-operator
+
+rbac:
+  role:
+    resources: ["pods", "deployments"]
+    verbs: ["get", "watch", "list", "create", "update", "patch", "delete"]
+  clusterRole:
+    resources: ["namespaces"]
+    verbs: ["get", "list", "watch", "create", "update", "delete"]
+
+env:
+  openaiApiKeySecret: openai-api-key

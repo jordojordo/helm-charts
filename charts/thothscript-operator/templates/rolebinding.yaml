@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "thothscript-operator.name" . }}-rolebinding
+  namespace: {{ include "thothscript-operator.namespace" . }}
+subjects:
+- kind: ServiceAccount
+  name: {{ .Values.serviceAccount.name }}
+  namespace: {{ include "thothscript-operator.namespace" . }}
+roleRef:
+  kind: Role
+  name: {{ include "thothscript-operator.name" . }}-role
+  apiGroup: rbac.authorization.k8s.io

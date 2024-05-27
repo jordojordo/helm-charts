@@ -109,4 +109,3 @@ This command removes all the Kubernetes components associated with the chart and
 ## Conclusion
 
 Deploying Daphine using this Helm chart will provide you with a robust solution for streaming music and videos within your Kubernetes cluster. Ensure your environment is configured to handle network and storage resources as specified in `values.yaml`.
-```
