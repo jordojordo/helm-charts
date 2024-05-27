@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "thothscript.fullname" . }}
+  namespace: {{ include "thothscript.namespace" . }}
+  labels:
+    {{- include "thothscript.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "thothscript.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "thothscript.name" . }}
+    spec:
+      containers:
+      - name: thothscript
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: CLIENT_THOTHSCRIPT_PROXY_SCHEME
+          value: "{{ .Values.env.THOTHSCRIPT_PROXY_SCHEME }}"
+        - name: CLIENT_THOTHSCRIPT_PROXY_HOST
+          value: "{{ .Values.env.THOTHSCRIPT_PROXY_HOST }}"
+        - name: CLIENT_THOTHSCRIPT_PROXY_PORT
+          value: "{{ .Values.env.THOTHSCRIPT_PROXY_PORT }}"
+        - name: CLIENT_THOTHSCRIPT_PROXY_PATH
+          value: "{{ .Values.env.THOTHSCRIPT_PROXY_PATH }}"
+        - name: CLIENT_THOTHSCRIPT_OPERATOR_HOST
+          value: "{{ .Values.env.THOTHSCRIPT_OPERATOR_HOST }}"
+        - name: CLIENT_THOTHSCRIPT_OPERATOR_NAMESPACE
+          value: "{{ .Values.env.THOTHSCRIPT_OPERATOR_NAMESPACE }}"
+        - name: CLIENT_THOTHSCRIPT_OPERATOR_PORT
+          value: "{{ .Values.env.THOTHSCRIPT_OPERATOR_PORT }}"
+        ports:
+        - containerPort: 80
