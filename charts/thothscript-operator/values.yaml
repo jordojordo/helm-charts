@@ -18,10 +18,16 @@ serviceAccount:
 
 rbac:
   role:
-    resources: ["pods", "deployments"]
+    resources:
+      - name: "pods"
+        apiGroup: ""
+      - name: "deployments"
+        apiGroup: "apps"
     verbs: ["get", "watch", "list", "create", "update", "patch", "delete"]
   clusterRole:
-    resources: ["namespaces"]
+    resources:
+      - name: "namespaces"
+        apiGroup: ""
     verbs: ["get", "list", "watch", "create", "update", "delete"]
 
 env:

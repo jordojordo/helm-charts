@@ -23,39 +23,33 @@ helm install thothscript-operator jordojordo/thothscript-operator
 
 ## Parameters
 
-The parameters in the values.yaml file allow you to customize the deployment of the ThothScript Operator. Here is a description of each parameter:
+The parameters in the `values.yaml` file allow you to customize the deployment of the ThothScript Operator. Here is a description of each parameter:
 
-| Parameter                | Description                                                  | Default                                     |
-|--------------------------|--------------------------------------------------------------|---------------------------------------------|
-| `namespace`              | Namespace where the ThothScript Operator will be deployed    | `thothscript`                              |
-| `replicaCount`           | Number of replicas of the ThothScript Operator               | `1`                                         |
-| `image.repository`       | Docker image repository for the ThothScript Operator         | `ghcr.io/jordojordo/thothscript-operator`  |
-| `image.tag`              | Docker image tag for the ThothScript Operator                | `"0.1.0"`                                   |
-| `image.pullPolicy`       | Image pull policy                                            | `"Always"`                                  |
-| `service.type`           | Type of Kubernetes service (e.g., ClusterIP, NodePort, LoadBalancer) | `"ClusterIP"`                              |
-| `service.port`           | Port for the Kubernetes service                              | `3000`                                      |
-| `service.nodePort`       | NodePort for the Kubernetes service (if type is NodePort)    | `null`                                      |
-| `resources.requests.memory` | Memory request for the ThothScript Operator pods          | `nil`                                       |
-| `resources.requests.cpu`    | CPU request for the ThothScript Operator pods             | `nil`                                       |
-| `resources.limits.memory`   | Memory limit for the ThothScript Operator pods            | `nil`                                       |
-| `resources.limits.cpu`      | CPU limit for the ThothScript Operator pods               | `nil`                                       |
-| `nodeSelector`           | Node selector for pod assignment                             | `{}`                                        |
-| `tolerations`            | Tolerations for pod assignment                               | `[]`                                        |
-| `affinity`               | Affinity rules for pod assignment                            | `{}`                                        |
-| `websocket.port`         | WebSocket server port                                        | `3000`                                      |
-| `websocket.secure`       | Enable TLS for WebSocket                                     | `false`                                     |
-| `rbac.create`            | Create RBAC resources                                        | `true`                                      |
-| `rbac.role.resources`    | Resources managed by the Role                                | `["pods", "deployments"]`                   |
-| `rbac.role.verbs`        | Verbs allowed for the Role                                   | `["get", "watch", "list", "create", "update", "patch", "delete"]` |
-| `rbac.clusterRole.resources` | Resources managed by the ClusterRole                     | `["namespaces"]`                            |
-| `rbac.clusterRole.verbs` | Verbs allowed for the ClusterRole                            | `["get", "list", "watch", "create", "update", "delete"]` |
-| `serviceAccount.create`  | Create a service account                                     | `true`                                      |
-| `serviceAccount.name`    | Name of the service account                                  | `thothscript-operator`                      |
-| `ingress.enabled`        | Enable ingress for the ThothScript Operator                  | `false`                                     |
-| `ingress.annotations`    | Annotations for the ingress resource                         | `{}`                                        |
-| `ingress.hosts`          | Hosts for the ingress resource                               | `[]`                                        |
-| `ingress.tls`            | TLS configuration for the ingress resource                   | `[]`                                        |
-| `env.openaiApiKeySecret` | Secret name for OpenAI API key                               | `openai-api-key`                            |
+| Parameter                   | Description                                                  | Default                                     |
+|-----------------------------|--------------------------------------------------------------|---------------------------------------------|
+| `namespace`                 | Namespace where the ThothScript Operator will be deployed    | `thothscript`                              |
+| `replicaCount`              | Number of replicas of the ThothScript Operator               | `1`                                         |
+| `image.repository`          | Docker image repository for the ThothScript Operator         | `ghcr.io/jordojordo/thothscript-operator`  |
+| `image.tag`                 | Docker image tag for the ThothScript Operator                | `"0.1.0"`                                   |
+| `image.pullPolicy`          | Image pull policy                                            | `"Always"`                                  |
+| `service.type`              | Type of Kubernetes service (e.g., ClusterIP, NodePort, LoadBalancer) | `"ClusterIP"`                              |
+| `service.port`              | Port for the Kubernetes service                              | `3000`                                      |
+| `service.nodePort`          | NodePort for the Kubernetes service (if type is NodePort)    | `null`                                      |
+| `resources.requests.memory` | Memory request for the ThothScript Operator pods             | `nil`                                       |
+| `resources.requests.cpu`    | CPU request for the ThothScript Operator pods                | `nil`                                       |
+| `resources.limits.memory`   | Memory limit for the ThothScript Operator pods               | `nil`                                       |
+| `resources.limits.cpu`      | CPU limit for the ThothScript Operator pods                  | `nil`                                       |
+| `nodeSelector`              | Node selector for pod assignment                             | `{}`                                        |
+| `tolerations`               | Tolerations for pod assignment                               | `[]`                                        |
+| `affinity`                  | Affinity rules for pod assignment                            | `{}`                                        |
+| `rbac.role.resources`       | Resources managed by the Role                                | `[{"name": "pods", "apiGroup": ""}, {"name": "deployments", "apiGroup": "apps"}]` |
+| `rbac.role.verbs`           | Verbs allowed for the Role                                   | `["get", "watch", "list", "create", "update", "patch", "delete"]` |
+| `rbac.clusterRole.resources`| Resources managed by the ClusterRole                         | `[{"name": "namespaces", "apiGroup": ""}]`  |
+| `rbac.clusterRole.verbs`    | Verbs allowed for the ClusterRole                            | `["get", "list", "watch", "create", "update", "delete"]` |
+| `serviceAccount.create`     | Create a service account                                     | `true`                                      |
+| `serviceAccount.name`       | Name of the service account                                  | `thothscript-operator`                      |
+| `env.openaiApiSecret`       | Secret name for OpenAI API key                               | `openai-api-key`                            |
+| `env.openaiApiKey`          | OpenAI API Key                                               | `"<YOUR_OPENAI_API_KEY>"`                   |
 
 Example values.yaml:
 

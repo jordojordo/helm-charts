@@ -1,4 +1,3 @@
-# role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -7,7 +6,7 @@ metadata:
 rules:
 {{- $root := . }}
 {{- range $resource := .Values.rbac.role.resources }}
-- apiGroups: [""]
-  resources: [{{ $resource }}]
+- apiGroups: [{{ $resource.apiGroup }}]
+  resources: [{{ $resource.name }}]
   verbs: {{ toYaml $root.Values.rbac.role.verbs | nindent 4 }}
 {{- end }}
