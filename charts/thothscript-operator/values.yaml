@@ -25,4 +25,5 @@ rbac:
     verbs: ["get", "list", "watch", "create", "update", "delete"]
 
 env:
-  openaiApiKeySecret: openai-api-key
+  openaiApiSecret: openai-api-key
+  openaiApiKey: "<YOUR_OPENAI_API_KEY>"  # Add your OpenAI API Key here
