@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "thothscript.fullname" . }}
-  namespace: {{ include "thothscript.namespace" . }}
+  namespace: {{ .Values.namespace }}
   labels:
     {{- include "thothscript.labels" . | nindent 4 }}
 spec:
@@ -23,9 +23,9 @@ spec:
         - name: CLIENT_THOTHSCRIPT_PROXY_SCHEME
           value: "{{ .Values.env.THOTHSCRIPT_PROXY_SCHEME }}"
         - name: CLIENT_THOTHSCRIPT_PROXY_HOST
-          value: "{{ .Values.env.THOTHSCRIPT_PROXY_HOST }}"
+          value: "{{ .Values.env.THOTHSCRIPT_PROXY_HOST | default (tpl (printf "{{ .Values.ingress.hosts | first | quote }}") $) }}"
         - name: CLIENT_THOTHSCRIPT_PROXY_PORT
-          value: "{{ .Values.env.THOTHSCRIPT_PROXY_PORT }}"
+          value: "{{ .Values.env.THOTHSCRIPT_PROXY_PORT | default (toString .Values.service.port) }}"
         - name: CLIENT_THOTHSCRIPT_PROXY_PATH
           value: "{{ .Values.env.THOTHSCRIPT_PROXY_PATH }}"
         - name: CLIENT_THOTHSCRIPT_OPERATOR_HOST

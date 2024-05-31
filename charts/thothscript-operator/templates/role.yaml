@@ -2,11 +2,10 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: {{ include "thothscript-operator.name" . }}-role
-  namespace: {{ include "thothscript-operator.namespace" . }}
+  namespace: {{ .Values.namespace }}
 rules:
-{{- $root := . }}
-{{- range $resource := .Values.rbac.role.resources }}
-- apiGroups: [{{ $resource.apiGroup }}]
-  resources: [{{ $resource.name }}]
-  verbs: {{ toYaml $root.Values.rbac.role.verbs | nindent 4 }}
+{{- range .Values.rbac.role.resources }}
+- apiGroups: ["{{ .apiGroup }}"]
+  resources: ["{{ .name }}"]
+  verbs: {{ toYaml $.Values.rbac.role.verbs | nindent 4 }}
 {{- end }}

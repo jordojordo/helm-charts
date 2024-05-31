@@ -5,20 +5,35 @@ replicaCount: 1
 image:
   repository: "ghcr.io/jordojordo/thothscript"
   pullPolicy: Always
-  # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
 service:
-  type: NodePort
+  type: ClusterIP
   port: 80
+
+ingress:
+  enabled: true
+  controller:
+    install: false
+    className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  hosts:
+    - host: thothscript.local.gd
+      paths:
+        - /
+  tls: []
 
 env:
   THOTHSCRIPT_PROXY_SCHEME: "ws"
   THOTHSCRIPT_PROXY_HOST: "localhost"
-  THOTHSCRIPT_PROXY_PORT: "80"
+  THOTHSCRIPT_PROXY_PORT: ""
   THOTHSCRIPT_PROXY_PATH: "/ws/"
   THOTHSCRIPT_OPERATOR_HOST: "thothscript-operator"
   THOTHSCRIPT_OPERATOR_NAMESPACE: "thothscript"
   THOTHSCRIPT_OPERATOR_PORT: "3000"
 
 resources: {}
+
+rbac:
+  create: false

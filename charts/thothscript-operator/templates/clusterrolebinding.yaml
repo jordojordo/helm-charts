@@ -5,7 +5,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: {{ .Values.serviceAccount.name }}
-  namespace: {{ include "thothscript-operator.namespace" . }}
+  namespace: {{ .Values.namespace }}
 roleRef:
   kind: ClusterRole
   name: {{ include "thothscript-operator.name" . }}-namespace-manager

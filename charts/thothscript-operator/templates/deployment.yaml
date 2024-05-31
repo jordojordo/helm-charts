@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "thothscript-operator.name" . }}
-  namespace: {{ include "thothscript-operator.namespace" . }}
+  namespace: {{ .Values.namespace }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -33,7 +33,7 @@ spec:
         - name: OPENAI_API_KEY
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.env.openaiApiKeySecret }}
+              name: {{ .Values.env.OPENAI_API_KEY_NAME }}
               key: OPENAI_API_KEY
         ports:
         - containerPort: {{ .Values.service.port }}

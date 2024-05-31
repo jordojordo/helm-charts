@@ -47,7 +47,7 @@ The following table lists the configurable parameters of the ThothScript UI Helm
 | `affinity`                             | Affinity settings for pod assignment           | `{}`                     |
 | `env.THOTHSCRIPT_PROXY_SCHEME`         | The scheme for the proxy                       | `ws`                     |
 | `env.THOTHSCRIPT_PROXY_HOST`           | The host URL for the proxy                     | `localhost`              |
-| `env.THOTHSCRIPT_PROXY_PORT`           | The port for the proxy                         | `80`                     |
+| `env.THOTHSCRIPT_PROXY_PORT`           | The port for the proxy                         | ``                     |
 | `env.THOTHSCRIPT_PROXY_PATH`           | The path for the proxy                         | `/ws/`                   |
 | `env.THOTHSCRIPT_OPERATOR_HOST`        | The host URL for the ThothScript operator      | `thothscript-operator`   |
 | `env.THOTHSCRIPT_OPERATOR_NAMESPACE`   | The namespace for the ThothScript operator     | `thothscript`            |

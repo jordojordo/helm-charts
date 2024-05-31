@@ -3,9 +3,8 @@ kind: ClusterRole
 metadata:
   name: {{ include "thothscript-operator.name" . }}-namespace-manager
 rules:
-{{- $root := . }}
-{{- range $resource := .Values.rbac.clusterRole.resources }}
-- apiGroups: [{{ $resource.apiGroup }}]
-  resources: [{{ $resource.name }}]
-  verbs: {{ toYaml $root.Values.rbac.clusterRole.verbs | nindent 4 }}
+{{- range .Values.rbac.clusterRole.resources }}
+- apiGroups: ["{{ .apiGroup }}"]
+  resources: ["{{ .name }}"]
+  verbs: {{ toYaml $.Values.rbac.clusterRole.verbs | nindent 4 }}
 {{- end }}
