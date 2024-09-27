@@ -70,6 +70,18 @@ entries:
     version: 0.1.0
   thothscript:
   - apiVersion: v2
+    appVersion: 0.1.5
+    created: "2024-09-27T10:21:25.006273862Z"
+    description: A Helm chart for Kubernetes
+    digest: a3ed0a7452e5b4b271c7dc2519e7f121641a5af6f04a4d791f2d9363008339f0
+    home: https://github.com/jordojordo/thothscript
+    icon: https://raw.githubusercontent.com/jordojordo/helm-charts/master/charts/thothscript/assets/icon.png
+    name: thothscript
+    type: application
+    urls:
+    - https://github.com/jordojordo/helm-charts/releases/download/thothscript-0.1.5/thothscript-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
     appVersion: 0.1.4
     created: "2024-06-29T09:46:53.728670394Z"
     description: A Helm chart for Kubernetes
@@ -188,4 +200,4 @@ entries:
     urls:
     - https://github.com/jordojordo/helm-charts/releases/download/thothscript-operator-0.1.0/thothscript-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-09-26T10:30:29.92511367Z"
+generated: "2024-09-27T10:21:25.0063152Z"
