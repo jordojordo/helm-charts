@@ -4,5 +4,5 @@ description: An API for streaming music and videos
 type: application
 home: "https://github.com/jordojordo/daphine"
 icon: "https://raw.githubusercontent.com/jordojordo/helm-charts/master/charts/daphine/assets/icon.png"
-version: "0.3.3"
-appVersion: "0.3.3"
+version: "0.3.4"
+appVersion: "0.3.4"

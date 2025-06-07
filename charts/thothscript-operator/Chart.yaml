@@ -6,8 +6,8 @@ type: application
 home: "https://github.com/jordojordo/thothscript-operator"
 icon: "https://raw.githubusercontent.com/jordojordo/helm-charts/master/charts/thothscript-operator/assets/icon.png"
 
-version: 0.1.8
-appVersion: "0.1.7"
+version: 0.1.9
+appVersion: "0.1.8"
 
 templates:
   - clusterrole.yaml
