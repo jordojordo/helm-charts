@@ -2,6 +2,18 @@ apiVersion: v1
 entries:
   daphine:
   - apiVersion: v2
+    appVersion: 0.3.4
+    created: "2025-06-07T10:36:49.807405494Z"
+    description: An API for streaming music and videos
+    digest: 168eac4999416ea0b5374268d6edd40b3e4299885678605f15461888e9f0e13d
+    home: https://github.com/jordojordo/daphine
+    icon: https://raw.githubusercontent.com/jordojordo/helm-charts/master/charts/daphine/assets/icon.png
+    name: daphine
+    type: application
+    urls:
+    - https://github.com/jordojordo/helm-charts/releases/download/daphine-0.3.4/daphine-0.3.4.tgz
+    version: 0.3.4
+  - apiVersion: v2
     appVersion: 0.3.3
     created: "2025-02-08T10:14:09.58622746Z"
     description: An API for streaming music and videos
@@ -106,6 +118,18 @@ entries:
     version: 0.1.0
   thothscript:
   - apiVersion: v2
+    appVersion: 0.1.6
+    created: "2025-06-07T10:36:49.913245666Z"
+    description: A Helm chart for Kubernetes
+    digest: 067f476bb83e64bf92219634726a1ea3826f24b956ad843dffa0fdcb9e5c65f2
+    home: https://github.com/jordojordo/thothscript
+    icon: https://raw.githubusercontent.com/jordojordo/helm-charts/master/charts/thothscript/assets/icon.png
+    name: thothscript
+    type: application
+    urls:
+    - https://github.com/jordojordo/helm-charts/releases/download/thothscript-0.1.6/thothscript-0.1.6.tgz
+    version: 0.1.6
+  - apiVersion: v2
     appVersion: 0.1.5
     created: "2024-09-27T10:21:25.006273862Z"
     description: A Helm chart for Kubernetes
@@ -160,6 +184,18 @@ entries:
     - https://github.com/jordojordo/helm-charts/releases/download/thothscript-0.1.1/thothscript-0.1.1.tgz
     version: 0.1.1
   thothscript-operator:
+  - apiVersion: v2
+    appVersion: 0.1.8
+    created: "2025-06-07T10:36:50.010787428Z"
+    description: An operator for managing gptscripts in a Kubernetes cluster
+    digest: 683a0d3717f30619d76031ff72a1002959e2a1048475d319d34bd79e380e9383
+    home: https://github.com/jordojordo/thothscript-operator
+    icon: https://raw.githubusercontent.com/jordojordo/helm-charts/master/charts/thothscript-operator/assets/icon.png
+    name: thothscript-operator
+    type: application
+    urls:
+    - https://github.com/jordojordo/helm-charts/releases/download/thothscript-operator-0.1.9/thothscript-operator-0.1.9.tgz
+    version: 0.1.9
   - apiVersion: v2
     appVersion: 0.1.7
     created: "2024-11-16T10:14:46.174221904Z"
@@ -260,4 +296,4 @@ entries:
     urls:
     - https://github.com/jordojordo/helm-charts/releases/download/thothscript-operator-0.1.0/thothscript-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2025-02-08T10:14:09.586289054Z"
+generated: "2025-06-07T10:36:50.010876164Z"
