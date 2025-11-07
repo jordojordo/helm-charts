@@ -118,6 +118,18 @@ entries:
     version: 0.1.0
   thothscript:
   - apiVersion: v2
+    appVersion: 0.1.7
+    created: "2025-11-07T10:00:27.953476421Z"
+    description: A Helm chart for Kubernetes
+    digest: 234ab93cec73cbab01d5003e9ae6c8b4862fe73aefa3d3c181633f1a9776bec0
+    home: https://github.com/jordojordo/thothscript
+    icon: https://raw.githubusercontent.com/jordojordo/helm-charts/master/charts/thothscript/assets/icon.png
+    name: thothscript
+    type: application
+    urls:
+    - https://github.com/jordojordo/helm-charts/releases/download/thothscript-0.1.7/thothscript-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v2
     appVersion: 0.1.6
     created: "2025-06-07T10:36:49.913245666Z"
     description: A Helm chart for Kubernetes
@@ -184,6 +196,18 @@ entries:
     - https://github.com/jordojordo/helm-charts/releases/download/thothscript-0.1.1/thothscript-0.1.1.tgz
     version: 0.1.1
   thothscript-operator:
+  - apiVersion: v2
+    appVersion: 0.1.9
+    created: "2025-11-07T10:00:28.095493989Z"
+    description: An operator for managing gptscripts in a Kubernetes cluster
+    digest: aa79ebd274dc5bb2295fa98a47b2fbb7b317a9c89562e5f799429bd55a502cd5
+    home: https://github.com/jordojordo/thothscript-operator
+    icon: https://raw.githubusercontent.com/jordojordo/helm-charts/master/charts/thothscript-operator/assets/icon.png
+    name: thothscript-operator
+    type: application
+    urls:
+    - https://github.com/jordojordo/helm-charts/releases/download/thothscript-operator-0.1.10/thothscript-operator-0.1.10.tgz
+    version: 0.1.10
   - apiVersion: v2
     appVersion: 0.1.8
     created: "2025-06-07T10:36:50.010787428Z"
@@ -296,4 +320,4 @@ entries:
     urls:
     - https://github.com/jordojordo/helm-charts/releases/download/thothscript-operator-0.1.0/thothscript-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2025-06-07T10:36:50.010876164Z"
+generated: "2025-11-07T10:00:28.095593655Z"
